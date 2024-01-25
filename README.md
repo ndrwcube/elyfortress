@@ -3,3 +3,6 @@
 FortressAPI is a Java library for easy Ely.by authorisation Minecraft.  
 With FortressAPI, developers can easily authorise/authenticate with the [Ely.by Minecraft Authorisation Service](https://ely.by).
 **Bastion Developers**: Please use Bitbucket for the Developer Builds and Repository.  
+
+#Contact
+Andrew - Project Lead - Discord [\_windows7\_](https://discordapp.com/users/871576883253350471) - Email [notcubeboy@gmail.com](mailto:notcubeboy@gmail.com)
