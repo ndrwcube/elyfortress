@@ -13,7 +13,7 @@ import org.json.simple.parser.JSONParser;
 public class OAuthEly {
 
 	// get and auth refToken
-	public static String authRefToken(String cID, String cS, String authCode, String redirURI) {
+	public static String GetRefToken(String cID, String cS, String authCode, String redirURI) {
 		String reftoken = "";
 		try {
 			URL url = new URL("https://account.ely.by/api/oauth2/v1/token");
@@ -58,7 +58,7 @@ public class OAuthEly {
 	}
 
 	// thus auth the reftoken for an accesstoken
-	public static String AccessTokenFrmRef(String cID, String cS, String redirURI, String reftoken) throws IOException {
+	public static String AuthRefToken(String cID, String cS, String redirURI, String reftoken) throws IOException {
 		// authreftoken
 
 		URL urlb = new URL("https://account.ely.by/api/oauth2/v1/token");
@@ -99,10 +99,10 @@ public class OAuthEly {
 
 		return acctoken;
 	}
-	
-	//get user info as JSON, may parse in another class
+
+	// get user info as JSON, may parse in another class
 	public static String usrinfo(String acctoken) {
-		String responsec="";
+		String responsec = "";
 		try {
 			URL urlc = new URL("https://account.ely.by/api/account/v1/info");
 			HttpURLConnection httpConnc = (HttpURLConnection) urlc.openConnection();
@@ -115,7 +115,7 @@ public class OAuthEly {
 			Scanner sc = new Scanner(responseStreamc).useDelimiter("\\A");
 			responsec = sc.hasNext() ? sc.next() : "";
 			sc.close();
-			//System.out.println(responsec);
+			// System.out.println(responsec);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

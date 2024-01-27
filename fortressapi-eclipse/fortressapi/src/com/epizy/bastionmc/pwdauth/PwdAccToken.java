@@ -13,7 +13,9 @@ import org.json.simple.parser.ParseException;
 
 public class PwdAccToken {
 
-	public String AccessToken(String uname, String pwd, String clientToken) throws IOException, ParseException {
+	public static String UserInfo = "";
+
+	public static String AccessToken(String uname, String pwd, String clientToken) throws IOException, ParseException {
 		System.out.println("Authorising " + uname + " with the Ely service for " + clientToken + ".");
 
 		URL url = new URL("https://authserver.ely.by/auth/authenticate");
@@ -40,6 +42,7 @@ public class PwdAccToken {
 
 		JSONParser jsonParser = new JSONParser();
 		JSONObject result = (JSONObject) jsonParser.parse(response);
+		UserInfo = (String) result.get("user");
 		String AccToken = (String) result.get("accessToken");
 
 		return AccToken;
@@ -49,7 +52,7 @@ public class PwdAccToken {
 	// 'accessToken=accToken&clientToken=clientToken&requestUser=true'
 	// 'https://authserver.ely.by/auth/refresh'
 
-	public String RefreshedAccToken(String AccToken, String ClientToken, boolean Invalidate)
+	public static String RefreshedAccToken(String AccToken, String ClientToken, boolean Invalidate)
 			throws IOException, ParseException {
 		URL url = new URL("https://authserver.ely.by/auth/refresh");
 		HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
@@ -82,7 +85,7 @@ public class PwdAccToken {
 		return RefAccToken;
 	}
 
-	public void Invalidate(String accToken, String clientToken) throws IOException {
+	public static void Invalidate(String accToken, String clientToken) throws IOException {
 
 		URL url = new URL("https://authserver.ely.by/auth/invalidate");
 		HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
@@ -92,7 +95,7 @@ public class PwdAccToken {
 
 		httpConn.setDoOutput(true);
 		OutputStreamWriter writer = new OutputStreamWriter(httpConn.getOutputStream());
-		writer.write("accessToken="+accToken+"&clientToken="+clientToken);
+		writer.write("accessToken=" + accToken + "&clientToken=" + clientToken);
 		writer.flush();
 		writer.close();
 		httpConn.getOutputStream().close();
@@ -100,7 +103,7 @@ public class PwdAccToken {
 		InputStream responseStream = httpConn.getResponseCode() / 100 == 2 ? httpConn.getInputStream()
 				: httpConn.getErrorStream();
 		Scanner s = new Scanner(responseStream).useDelimiter("\\A");
-		//String response = s.hasNext() ? s.next() : "";
+		// String response = s.hasNext() ? s.next() : "";
 		s.close();
 		// System.out.println(response);
 
