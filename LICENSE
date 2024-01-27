@@ -13,3 +13,10 @@ It is a must to credit the Author(s) when Distributing this package, and usage o
 Package in a Commercial setting (any situation which allows the Distributor to earn),
 Including for Educational Purposes, is allowed, but the package Author(s) should be
 Consulted beforehand.
+
+3. Using the Package in another project (Repackaging)
+The Package may be used in an open source project when the Author(s) get(s) credited.
+The latest version should be used as much as possible, to reduce the amount of
+Possible bugs.
+
+4. Forking the Package 
