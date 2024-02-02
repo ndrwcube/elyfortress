@@ -36,10 +36,6 @@ public class OAuthEly {
 			String response = s.hasNext() ? s.next() : "";
 			s.close();
 
-			System.out.println("");
-			System.out.println("Received JSON data from Ely.by: ");
-			System.out.println(response);
-
 			JSONParser parser = new JSONParser();
 			try {
 				Object obj = parser.parse(response);
@@ -78,26 +74,27 @@ public class OAuthEly {
 
 		InputStream responseStreamb = httpConnb.getResponseCode() / 100 == 2 ? httpConnb.getInputStream()
 				: httpConnb.getErrorStream();
-		Scanner sb = new Scanner(responseStreamb).useDelimiter("\\A");
-		String responseb = sb.hasNext() ? sb.next() : "";
-		sb.close();
+		try (Scanner sb = new Scanner(responseStreamb).useDelimiter("\\A")) {
+			String responseb = sb.hasNext() ? sb.next() : "";
+			sb.close();
 
-		System.out.println(responseb);
+			System.out.println(responseb);
 
-		// getusrinfo
+			// getusrinfo
 
-		String acctoken = "";
+			String acctoken = "";
 
-		JSONParser parser2 = new JSONParser();
-		try {
-			Object obj2 = parser2.parse(responseb);
-			JSONObject jsonObject2 = (JSONObject) obj2;
-			acctoken = (String) jsonObject2.get("access_token");
-		} catch (Exception e) {
-			e.printStackTrace();
+			JSONParser parser2 = new JSONParser();
+			try {
+				Object obj2 = parser2.parse(responseb);
+				JSONObject jsonObject2 = (JSONObject) obj2;
+				acctoken = (String) jsonObject2.get("access_token");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return acctoken;
 		}
-
-		return acctoken;
 	}
 
 	// get user info as JSON, may parse in another class

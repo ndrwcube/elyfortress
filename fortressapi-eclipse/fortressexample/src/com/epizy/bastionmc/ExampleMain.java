@@ -13,7 +13,7 @@ public class ExampleMain {
 		if (args.length == 3) {
 			try {
 				String AccToken = PwdAccToken.AccessToken(args[0], args[1], args[2]);
-				String RefAccToken = PwdAccToken.RefreshedAccToken(AccToken, args[2]);
+				String RefAccToken = PwdAccToken.RefreshedAccToken(AccToken, args[2], true);
 				print(AccToken);
 				print(RefAccToken);
 			} catch (IOException | ParseException e) {

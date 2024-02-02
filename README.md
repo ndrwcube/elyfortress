@@ -13,6 +13,6 @@ Clone this repo and open "fortressapi-eclipse" in Eclipse IDE for easy source co
 # Contact
 Andrew - Project Lead - Discord [\_windows7\_](https://discordapp.com/users/871576883253350471) - Email [notcubeboy@gmail.com](mailto:notcubeboy@gmail.com)
 
-#Credits
+# Credits
 The [Ely.by](https://ely.by) team for making this project possible!<br>
 This project was built on information from the [Ely.by Documentation](https://docs.ely.by).
