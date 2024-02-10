@@ -13,10 +13,18 @@ import org.json.simple.parser.ParseException;
 
 public class MCAuth {
 
+	/**
+	 * @param uname       Username of the Player/Account.
+	 * @param pwd         Password associated with that account.
+	 * @param clientToken Any chosen String, to be persisted.
+	 * @return Access Token for the User.
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static String AccessToken(String uname, String pwd, String clientToken) throws IOException, ParseException {
-		System.out.println("Authorising " + uname + " with the Ely service for " + clientToken + ".");
-
 		URL url = new URL("https://authserver.ely.by/auth/authenticate");
+		String responsereturn = "";
+
 		HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
 		httpConn.setRequestMethod("POST");
 
@@ -40,17 +48,34 @@ public class MCAuth {
 			JSONParser jsonParser = new JSONParser();
 			JSONObject result = (JSONObject) jsonParser.parse(response);
 			String AccToken = (String) result.get("accessToken");
-
-			return AccToken;
+			if (result.containsKey("error")) {
+				if (result.get("error").equals("ForbiddenOperationException")
+						&& result.get("errorMessage").equals("Account protected with two factor auth.")) {
+					responsereturn = "Error2FAMissingToken";
+				}
+			} else {
+				responsereturn = AccToken;
+			}
 		}
+
+		return responsereturn;
 	}
 
 	// next fn: curl -d
 	// 'accessToken=accToken&clientToken=clientToken&requestUser=true'
 	// 'https://authserver.ely.by/auth/refresh'
 
+	/**
+	 * @param AccToken    Previously obtained Access Token.
+	 * @param ClientToken Client Token used when obtaining the Access Token.
+	 * @param Invalidate  Should we invalidate the current Access Token?
+	 * @return Newly obtained Access Token, reset expiry.
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static String RefreshedAccToken(String AccToken, String ClientToken, boolean Invalidate)
 			throws IOException, ParseException {
+		String responsereturn = "";
 		URL url = new URL("https://authserver.ely.by/auth/refresh");
 		HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
 		httpConn.setRequestMethod("POST");
@@ -74,16 +99,36 @@ public class MCAuth {
 			JSONObject result = (JSONObject) jsonParser.parse(response);
 			String RefAccToken = (String) result.get("accessToken");
 
-			if (Invalidate) {
-				Invalidate(AccToken, ClientToken);
+			if (result.containsKey("error")) {
+				if (result.get("error").equals("ForbiddenOperationException")) {
+					responsereturn = (String) result.get("errorMessage");
+				}
+			} else {
+				if (Invalidate) {
+					Invalidate(AccToken, ClientToken);
+				}
+				responsereturn = RefAccToken;
 			}
 
-			return RefAccToken;
+			return responsereturn;
 		}
 	}
 
-	public static void Invalidate(String accToken, String clientToken) throws IOException {
-
+	/**
+	 * @param accToken    Access Token to Invalidate.
+	 * @param clientToken Client Token used when obtaining the Access Token.
+	 * @throws IOException
+	 */
+	/**
+	 * @param accToken Access Token to Invalidate.
+	 * @param clientToken Client Token used when obtaining the Access Token.
+	 * @return If the Access Token was successfully Invalidated.
+	 * @throws IOException
+	 * @throws ParseException 
+	 */
+	public static String Invalidate(String accToken, String clientToken) throws IOException, ParseException {
+		
+		String responsereturn = "";
 		URL url = new URL("https://authserver.ely.by/auth/invalidate");
 		HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
 		httpConn.setRequestMethod("POST");
@@ -99,16 +144,33 @@ public class MCAuth {
 
 		InputStream responseStream = httpConn.getResponseCode() / 100 == 2 ? httpConn.getInputStream()
 				: httpConn.getErrorStream();
-		Scanner s = new Scanner(responseStream).useDelimiter("\\A");
-		// String response = s.hasNext() ? s.next() : "";
-		s.close();
-		// System.out.println(response);
+		try (Scanner s = new Scanner(responseStream).useDelimiter("\\A")) {
+			String response = s.hasNext() ? s.next() : "";
+			s.close();
+			// System.out.println(response);
+			
+			JSONParser jsonParser = new JSONParser();
+			JSONObject result = (JSONObject) jsonParser.parse(response);
+			if (result.containsKey("error")) {
+				if (result.get("error").equals("ForbiddenOperationException")
+						&& result.get("errorMessage").equals("Token expired.")) {
+					responsereturn = "ErrorInvalidToken";
+				}
+			} else {
+				responsereturn = "Done";
+			}
+		}
+		return responsereturn;
 
 	}
-	
+
+	/**
+	 * @param Username Username of Player/Account to sign out of.
+	 * @param Password Password associated with that account.
+	 * @throws IOException
+	 */
 	public static void FullSignout(String Username, String Password) throws IOException {
-		
-		
+
 		URL url = new URL("https://authserver.ely.by/auth/signout");
 		HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
 		httpConn.setRequestMethod("POST");
@@ -128,7 +190,7 @@ public class MCAuth {
 		// String response = s.hasNext() ? s.next() : "";
 		s.close();
 		// System.out.println(response);
-		
+
 	}
 
 }

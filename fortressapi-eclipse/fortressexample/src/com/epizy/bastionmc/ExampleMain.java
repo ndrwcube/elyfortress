@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.json.simple.parser.ParseException;
 
-import com.epizy.bastionmc.pwdauth.PwdAccToken;
+import com.epizy.bastionmc.pwdauth.MCAuth;
 
 public class ExampleMain {
 
@@ -12,8 +12,8 @@ public class ExampleMain {
 
 		if (args.length == 3) {
 			try {
-				String AccToken = PwdAccToken.AccessToken(args[0], args[1], args[2]);
-				String RefAccToken = PwdAccToken.RefreshedAccToken(AccToken, args[2], true);
+				String AccToken = MCAuth.AccessToken(args[0], args[1], args[2]);
+				String RefAccToken = MCAuth.RefreshedAccToken(AccToken, args[2], true);
 				print(AccToken);
 				print(RefAccToken);
 			} catch (IOException | ParseException e) {

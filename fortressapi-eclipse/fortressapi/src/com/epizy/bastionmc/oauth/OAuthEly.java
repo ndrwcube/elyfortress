@@ -13,6 +13,13 @@ import org.json.simple.parser.JSONParser;
 public class OAuthEly {
 
 	// get and auth refToken
+	/**
+	 * @param cID Ely.by OAuth Client ID.
+	 * @param cS Ely.by OAuth Client Secret
+	 * @param authCode Authorisation Code received after Redirect.
+	 * @param redirURI Exact URI for OAuth's Successful Redirect.
+	 * @return Refresh Token to obtain new Access Token once expired.
+	 */
 	public static String GetRefToken(String cID, String cS, String authCode, String redirURI) {
 		String reftoken = "";
 		try {
@@ -54,6 +61,14 @@ public class OAuthEly {
 	}
 
 	// thus auth the reftoken for an accesstoken
+	/**
+	 * @param cID Ely.by OAuth Client ID.
+	 * @param cS Ely.by OAuth Client Secret
+	 * @param redirURI Exact URI for OAuth's Successful Redirect.
+	 * @param reftoken Refresh Token obtained.
+	 * @return New Access Token with reset expiry.
+	 * @throws IOException
+	 */
 	public static String AuthRefToken(String cID, String cS, String redirURI, String reftoken) throws IOException {
 		// authreftoken
 
@@ -98,6 +113,10 @@ public class OAuthEly {
 	}
 
 	// get user info as JSON, may parse in another class
+	/**
+	 * @param acctoken Valid Access Token.
+	 * @return JSON String containing user's information.
+	 */
 	public static String usrinfo(String acctoken) {
 		String responsec = "";
 		try {

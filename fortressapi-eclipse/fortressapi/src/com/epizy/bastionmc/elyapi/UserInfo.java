@@ -18,6 +18,12 @@ public class UserInfo {
 	//Getting the User's UUID
 	//GET https://authserver.ely.by/api/users/profiles/minecraft/{username}
 	//https://docs.ely.by/en/api.html#uuid
+	/**
+	 * @param Username Username of the Player/Account.
+	 * @return UUID of the given Player/Account.
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static String PlayerUUID(String Username) throws IOException, ParseException {
 		URL url = new URL("https://authserver.ely.by/api/users/profiles/minecraft/" + Username);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
