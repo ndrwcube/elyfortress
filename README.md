@@ -1,3 +1,6 @@
+# Deprecation Notice
+Now part of MCLib. Please view at [https://github.com/BastionDevs/MCLib](https://github.com/BastionDevs/MCLib).
+
 # FortressAPI for Ely.by 
 ![Ely.by Approved](https://img.shields.io/badge/Ely.by-Approved-brightgreen) ![Bastion GLP License](https://img.shields.io/badge/Bastion-GLP%20v1.05-blue) ![Stand With UKRAINE](https://img.shields.io/badge/Stand%20With-UKRAINE-yellow) ![Free PALESTINE](https://img.shields.io/badge/Free-PALESTINE-darkgreen)<br>
 FortressAPI is a Java library for easy Ely.by authorisation Minecraft.  
